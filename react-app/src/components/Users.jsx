@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function Users() {
+export default function Users(props) {
 
   const employee = {
     name:"gautamdheer",
     email:"gautam.litesh@gmail.com"
   }
   return (
-    <h1>Welcome {employee.name} user on the {employee.email} website....</h1>
+    <h1>Welcome {props.name} user on the {props.email} website....</h1>
   )
 }

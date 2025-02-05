@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <User/>
+      <User name="Gautam Dheer" email="gautamdheer.gh@gmail.com"/>
       <Message />
      </>
   )
