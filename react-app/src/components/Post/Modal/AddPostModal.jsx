@@ -1,4 +1,11 @@
+import { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+
 const AddPostModal = ({handleCloseEvent}) => {
+    const [content, setContent] = useState('');
+
 return (
 <>
 <div className="modal" id="addPostModal">
@@ -32,8 +39,12 @@ return (
 
         <div className="mb-4 col-span-2">
             <label className="block text-sm font-medium mb-2">Content</label>
-            <textarea className="border border-gray-300 rounded w-full p-2" rows="6" required></textarea>
-        </div>
+                <ReactQuill 
+                value={content} 
+                onChange={setContent} 
+                theme="snow" 
+                />   
+    </div>
 
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Featured Image</label>
