@@ -1,9 +1,11 @@
 import React from "react"
 import PostList from "./components/Post/PostList"
- 
+
 function App() {
+    return (
     <>
-        <PostList />
+    <PostList />
     </>
+    );
 }
 export default App
