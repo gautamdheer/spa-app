@@ -1,10 +1,18 @@
 
-import { useState } from 'react';
+import { React, useState, forwardRef, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const EditPostModal = ({handleCloseEvent}) => { 
+const EditPostModal = forwardRef(({ handleCloseEvent }, ref) => { 
+    const [title, setTitle] = useState('');
+    const [category, setCategory] = useState('');
+    const [status, setStatus] = useState('');
+    const [featuredImage, setFeaturedImage] = useState(null);   
     const [content, setContent] = useState('');
+
+    // create a ref to the Quill editor
+    const quillRef = useRef(null);
+
     return (
             <>
             <div className="modal" id="editPostModal">
@@ -19,7 +27,8 @@ const EditPostModal = ({handleCloseEvent}) => {
                         <input
                         type="text"
                         className="border border-gray-300 rounded w-full p-2"
-                        value="Sample Post Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                         />
                     </div>
@@ -27,6 +36,8 @@ const EditPostModal = ({handleCloseEvent}) => {
                         <label className="block text-sm font-medium mb-2">Category</label>
                         <select
                         className="border border-gray-300 rounded w-full p-2"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
                         required
                         >
                         <option value="">Select Category</option>
@@ -38,14 +49,16 @@ const EditPostModal = ({handleCloseEvent}) => {
             
                     <div className="mb-4">
                     <label className="block text-sm font-medium mb-2">Content</label>
-                    <ReactQuill value={content} onChange={setContent} theme="snow" />
+                    <ReactQuill value={content} ref={quillRef} onChange={setContent} theme="snow" />
                     </div>
             
                     <div className="mb-4 flex space-x-4">
                     <div className="flex-1">
                         <label className="block text-sm font-medium mb-2">Featured Image</label>
-                        <input
-                        type="file"
+                        <input 
+                        type="file" 
+                        className="border border-gray-300 rounded w-full p-2"  
+                        onChange={(e) => setFeaturedImage(e.target.files[0])}
                         />
                         <br /><br />
                         <img src="http://localhost/wp/wp-tuts/wp-content/uploads/2024/10/default-featured-image.jpg" alt="Featured" />
@@ -54,6 +67,8 @@ const EditPostModal = ({handleCloseEvent}) => {
                         <label className="block text-sm font-medium mb-2">Status</label>
                         <select
                         className="border border-gray-300 rounded w-full p-2"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
                         required
                         >
                         <option value="publish">Publish</option>
@@ -83,5 +98,5 @@ const EditPostModal = ({handleCloseEvent}) => {
         </div>   
             </>
         );
-    }
+})
     export default EditPostModal;

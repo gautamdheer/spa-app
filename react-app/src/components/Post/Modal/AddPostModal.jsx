@@ -4,7 +4,17 @@ import 'react-quill/dist/quill.snow.css';
 
 
 const AddPostModal = ({handleCloseEvent}) => {
+    const [title, setTitle] = useState('');
+    const [category, setCategory] = useState('');
+    const [status, setStatus] = useState('');
     const [content, setContent] = useState('');
+    const [featuredImage, setFeaturedImage] = useState(null);
+
+    // Handle form data
+    const handleSubmitData = (e) =>{
+        e.preventDefault();
+        console.log(title);
+    }
 
 return (
 <>
@@ -13,21 +23,24 @@ return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 relative">
     <div className="loader"></div>  
     <h2 className="text-2xl mb-4">Add New Post</h2>
-    <form>
+    <form onSubmit={handleSubmitData}>
         <div className="grid grid-cols-2 gap-4">
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Title</label>
             <input
             type="text"
             className="border border-gray-300 rounded w-full p-2"
-            value=""
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             required
             />
         </div>
 
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Category</label>
-            <select
+            <select 
+            value={category} 
+            onChange={(e) => setCategory(e.target.value)}
             className="border border-gray-300 rounded w-full p-2"
             required
             >
@@ -48,14 +61,14 @@ return (
 
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Featured Image</label>
-            <input
-            type="file"
-            />
+            <input type="file" onChange={(e) => setFeaturedImage(e.target.files[0])} />
         </div>
 
         <div className="mb-4">
             <label className="block text-sm font-medium mb-2">Status</label>
             <select
+            value={status} 
+            onChange={(e) => setStatus(e.target.value)}
             className="border border-gray-300 rounded w-full p-2"
             required
             >
