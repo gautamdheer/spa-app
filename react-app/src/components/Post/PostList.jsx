@@ -7,6 +7,8 @@ export default function PostList() {
     const [isAddPostModalOpen, setIsAddPostModalOpen] = useState(false)
     const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false)
     const [posts, setPosts] = useState([])
+    const [categories, setCategories] = useState([])
+    const [featuredMedia, setFeturedMedia] = useState([])
 
     const togglePostModal = () => {
       setIsAddPostModalOpen(prevState => !prevState);
@@ -42,6 +44,8 @@ export default function PostList() {
 
     useEffect(() => {
         fetchWordpressPosts()
+        fetchWordpressPostCategories()
+        fetchFeaturedImages()
       }, [])
 
     // post status 
@@ -59,11 +63,52 @@ export default function PostList() {
 
     }
     // get post categories
-    const getPostCategories = (categories) => {
-      const categoryNames = categories.map((cat) => cat.name);
-      return categoryNames.join(', ');
+    const fetchWordpressPostCategories = async () => {
+      try {
+        const res = await fetch('http://localhost/spa-app/wp/wp-json/wp/v2/categories', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Basic ' + btoa("admin:admin")
+          }
+        });
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error('Error fetching categories:', errorData);
+          return;
+        }
+    
+        const data = await res.json();
+        const categoriesObjectData = data.reduce((categoryObject, SingleCategory) => {
+          categoryObject[SingleCategory.id] = SingleCategory.name;
+          return categoryObject;
+        }, {})
+
+        setCategories(categoriesObjectData);
+        console.log(categoriesObjectData);
+      } 
+      catch (error) {
+        console.error('Fetch error:', error);
+      }
     }
 
+    // get featured images 
+    const fetchFeaturedImages = async () => {
+        const data = await fetch('http://localhost/spa-app/wp/wp-json/wp/v2/media',{
+          method:"GET",
+          headers:{
+            'Authorization': 'Basic ' + btoa("admin:admin")
+          }
+        })
+        const res = await data.json();
+        const featuredObjectData = res.reduce((featuredObject, SingleFeaturedImage) => {
+          featuredObject[SingleFeaturedImage.id] = SingleFeaturedImage.source_url;
+          return featuredObject;
+        },{})
+
+        setFeturedMedia(featuredObjectData);
+        console.log(featuredObjectData,"gautam");
+    }
   return (
     <>
     <div className="container max-w-5xl mx-auto p-4">
@@ -94,9 +139,9 @@ export default function PostList() {
           <td className="border px-4 py-2">
               {postStatus(post.status)}
           </td>
-           <td className="border px-4 py-2">{getPostCategories(post.categories)}</td>
+           <td className="border px-4 py-2">{(categories[post.categories])}</td>
           <td className="border px-4 py-2">
-            <img src={post.featured_media} alt={post.featured_media} className="w-16 h-16 object-cover" />
+            <img src={featuredMedia[post.featured_media]} alt={post.source_url} className="w-16 h-16 object-cover" />
           </td>
           <td className="border px-4 py-2">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded mr-2 cursor-pointer" onClick={toggleEditPostModal}>Edit</button>
