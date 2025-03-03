@@ -141,8 +141,7 @@ export default function PostList() {
           </td>
            <td className="border px-4 py-2">{(categories[post.categories])}</td>
           <td className="border px-4 py-2">
-            <img src={featuredMedia[post.featured_media]} alt={post.source_url} className="w-16 h-16 object-cover" />
-          </td>
+          <img src={featuredMedia[post.featured_media] && featuredMedia[post.featured_media] !== '' ? featuredMedia[post.featured_media] : 'https://placehold.co/200x300'} alt={post.source_url} className="w-16 h-16 object-cover" />          </td>
           <td className="border px-4 py-2">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded mr-2 cursor-pointer" onClick={toggleEditPostModal}>Edit</button>
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded cursor-pointer" disabled>Delete</button>
