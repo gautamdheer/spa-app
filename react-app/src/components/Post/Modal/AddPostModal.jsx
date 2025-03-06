@@ -3,13 +3,14 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 
-const AddPostModal = ({handleCloseEvent}) => {
+const AddPostModal = ({handleCloseEvent, categoriesList}) => {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [status, setStatus] = useState('');
     const [content, setContent] = useState('');
     const [featuredImage, setFeaturedImage] = useState(null);
 
+    console.log(categoriesList);
     // Handle form data
     const handleSubmitData = (e) =>{
         e.preventDefault();
@@ -45,8 +46,11 @@ return (
             required
             >
             <option value="">Select Category</option>
-            <option value="1">Category 1</option>  
-            <option value="2">Category 2</option>  
+                {
+                   Object.entries(categoriesList).map(([index, value]) => (
+                    <option value={index} key={index}>{value}</option>
+                ))
+                }
             </select>
         </div>
 

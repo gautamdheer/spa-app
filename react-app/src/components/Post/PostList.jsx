@@ -153,7 +153,7 @@ export default function PostList() {
     </table>  
     {
       isAddPostModalOpen && (
-        <AddPostModal handleCloseEvent={togglePostModal} />
+        <AddPostModal handleCloseEvent={togglePostModal} categoriesList={categories} />
       )
     }
     {
