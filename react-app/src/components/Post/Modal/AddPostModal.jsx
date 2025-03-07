@@ -9,14 +9,49 @@ const AddPostModal = ({handleCloseEvent, categoriesList}) => {
     const [status, setStatus] = useState('');
     const [content, setContent] = useState('');
     const [featuredImage, setFeaturedImage] = useState(null);
-
-    console.log(categoriesList);
+    
     // Handle form data
-    const handleSubmitData = (e) =>{
+    const handleSubmitData = async(e) =>{
         e.preventDefault();
-        console.log(title);
+        
+        let featuredImageID = null;
+        if(featuredImage){
+            featuredImageID = await handleFeaturedImageUpload(featuredImage);
+        }
+
+        const postData = {
+            title,
+            content:content,
+            categories:[category],
+            featured_image : featuredImageID,
+            status
+        }
+        console.log(postData);  
     }
 
+    // Upload featured image
+    const handleFeaturedImageUpload = async(featuredImageFile) => {
+            try {
+
+                const formdata = new FormData();
+                formdata.append("file",featuredImageFile);
+                formdata.append("alt_text", "Featured Image for post");
+
+
+                const apiResponse = await fetch("http://localhost/spa-app/wp/wp-json/wp/v2/media" , {
+                method:"POST",    
+                headers:{
+                        "Authorization":"Basic " + btoa('admin:admin'),
+                     },
+                body:formdata
+                })
+                const apiData = apiResponse.json();
+                console.log(apiData);
+                
+            } catch (error) {
+                console.log(error);
+            }
+    }
 return (
 <>
 <div className="modal" id="addPostModal">
